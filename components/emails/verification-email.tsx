@@ -38,7 +38,7 @@ export function VerificationEmail({
                 <Img
                   alt="Logo do Palim"
                   width={100}
-                  src="https://corujal.raavius.com/corujal.png"
+                  src="https://palim.com.br/palim.png"
                   className="mt-4"
                 />
               </Heading>

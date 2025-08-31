@@ -22,17 +22,17 @@ const tw = createTw({
 
 Font.register({
   family: "Geist",
-  src: "https://corujal.raavius.com/fonts/geist-regular.ttf",
+  src: "https://palim.com.br/fonts/geist-regular.ttf",
 });
 
 Font.register({
   family: "GeistMono",
-  src: "https://corujal.raavius.com/fonts/geist-mono.ttf",
+  src: "https://palim.com.br/fonts/geist-mono.ttf",
 });
 
 Font.register({
   family: "GeistBold",
-  src: "https://corujal.raavius.com/fonts/geist-bold.ttf",
+  src: "https://palim.com.br/fonts/geist-bold.ttf",
 })
 
 // Tipagem para os dados da ocorrência
@@ -66,7 +66,7 @@ export const OccurrencePdf: React.FC<OccurrencePdfProps> = ({ data }) => (
         {/* Cabeçalho */}
         <View style={tw("flex gap-4 flex-row items-center max-h-12 h-12 mb-6")}>
           <Image
-            src="https://corujal.raavius.com/images/goveno-do-para.png"
+            src="https://palim.com.br/images/goveno-do-para.png"
             style={tw("w-[41px] h-[48px]")}
           />
           <View style={tw("flex flex-col gap-1")}>
