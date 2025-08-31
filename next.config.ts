@@ -4,7 +4,6 @@ const nextConfig: NextConfig = {
   experimental: {
     globalNotFound: true,
   },
-  serverExternalPackages: ['@react-pdf/renderer'],
 };
 
 export default nextConfig;
