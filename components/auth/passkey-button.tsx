@@ -12,7 +12,7 @@ import { Check, Key, X } from "lucide-react";
 import { toast } from "sonner";
 
 // funções:
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/authClient";
 import { Loader } from "../pieces/loader";
 import { getErrorMessage } from "@/lib/errors";
 

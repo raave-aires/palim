@@ -1,5 +1,5 @@
-import { CardsTitle } from "@/components/cardsTitle";
-import { OccurrenceSeachForm } from "@/components/forms/occurrenceSearchForm";
+import { CardsTitle } from "@/components/cards-title";
+import { OccurrenceSeachForm } from "@/components/forms/occurrence-search-form";
 import { Card, CardDescription, CardHeader } from "@/components/ui/card";
 
 export default function VerOcorrencias() {

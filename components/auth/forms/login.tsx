@@ -24,7 +24,7 @@ import { toast } from "sonner"
 
 // ícones:
 import { Check, EyeIcon, EyeClosedIcon, X } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/authClient";
 import { PasskeyButton } from "../passkey-button";
 import { getErrorMessage } from "@/lib/errors";
 

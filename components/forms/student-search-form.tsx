@@ -23,8 +23,8 @@ import { Input } from "@/components/ui/input";
 import { seachStudent } from "@/lib/actions/studentSeachAction";
 import { Loader } from "../ui/loader";
 import { Search } from "lucide-react";
-import { StudentFoundCard, StudentNotFoundCard } from "../studentSearchResultCard";
-import { OccurrenceForm } from "./occurrenceForm";
+import { StudentFoundCard, StudentNotFoundCard } from "../student-search-result-card";
+import { OccurrenceForm } from "./occurrence-form";
 
 // validação do formulário:
 const valMessage = "O número de matrícula tem 6 dígitos";

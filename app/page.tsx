@@ -5,8 +5,8 @@ import {
   CardContent,
   CardDescription,
 } from "@/components/ui/card";
-import { ActionButton } from "@/components/home-buttons/actionsButtons";
-import { SiteHeader } from "@/components/siteHeader";
+import { ActionButton } from "@/components/home-buttons/actions-buttons";
+import { SiteHeader } from "@/components/site-header";
 
 export default function Home() {
   const allActions = [

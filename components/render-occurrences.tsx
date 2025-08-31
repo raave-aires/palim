@@ -1,5 +1,5 @@
 // componentes:
-import { PanoramaOccurrencesCard } from "@/components/panoramaOccurrencesCard";
+import { PanoramaOccurrencesCard } from "@/components/panorama-occurrences-card";
 
 // actions:
 import { bringOccurrences } from "@/lib/actions/panoramaActions";

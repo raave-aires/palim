@@ -23,8 +23,8 @@ import { Loader } from "../ui/loader";
 import {
   StudentFoundCard,
   StudentNotFoundCard,
-} from "@/components/studentSearchResultCard";
-import { OccurrenceCard } from "@/components/occurrenceCard";
+} from "@/components/student-search-result-card";
+import { OccurrenceCard } from "@/components/occurrence-card";
 import { Feedback } from "@/components/feedback";
 
 // ícones:

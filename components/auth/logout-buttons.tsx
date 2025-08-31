@@ -12,7 +12,7 @@ import {
 import { LogOut } from "lucide-react";
 
 // funções:
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/authClient";
 import { toast } from "sonner";
 import { Loader } from "../pieces/loader";
 

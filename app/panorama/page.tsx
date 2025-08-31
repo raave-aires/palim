@@ -1,5 +1,5 @@
-import { RenderOccurrences } from "@/components/renderOccurrences";
-import { SiteHeader } from "@/components/siteHeader";
+import { RenderOccurrences } from "@/components/render-occurrences";
+import { SiteHeader } from "@/components/site-header";
 
 export default function Page(){
   return(

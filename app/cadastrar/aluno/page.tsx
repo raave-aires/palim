@@ -4,8 +4,8 @@ import {
   CardDescription,
   CardHeader,
 } from "@/components/ui/card";
-import { StudentRegistrationForm } from "@/components/forms/studentRegistrationForm";
-import { CardsTitle } from "@/components/cardsTitle";
+import { StudentRegistrationForm } from "@/components/forms/student-registration-form";
+import { CardsTitle } from "@/components/cards-title";
 
 
 export default function Page() {

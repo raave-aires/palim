@@ -27,7 +27,7 @@ import {
   EyeClosedIcon,
   X,
 } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "@/lib/authClient";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/errors";
 

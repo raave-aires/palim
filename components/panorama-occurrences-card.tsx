@@ -1,5 +1,5 @@
 // componentes:
-import { SituationSelect } from "@/components/situationSelect";
+import { SituationSelect } from "@/components/situation-select";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
