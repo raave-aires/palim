@@ -4,8 +4,6 @@ import { AuthHeader } from "@/components/auth/card-header";
 
 import { LoginForm } from "@/components/auth/forms/login";
 import { AuthFooter } from "@/components/auth/card-footer";
-import { RenderOauthButtons } from "@/components/renderers/oath-buttons";
-import { Or } from "@/components/pieces/or";
 
 export default function Page() {
   return (
@@ -13,8 +11,6 @@ export default function Page() {
       <AuthHeader auth_type="login" />
 
       <CardContent className="flex flex-col gap-2">
-        <RenderOauthButtons />
-        <Or />
         <LoginForm />
       </CardContent>
 

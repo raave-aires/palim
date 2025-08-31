@@ -46,16 +46,4 @@ export const auth = betterAuth({
     },
     sendOnSignUp: true,
   },
-  socialProviders: {
-    // login com o github:
-    github: {
-      clientId: process.env.GITHUB_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-    },
-    // login com o google:
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    },
-  },
 });

@@ -11,15 +11,28 @@ CREATE TABLE "public"."Aluno" (
 );
 
 -- CreateTable
+CREATE TABLE "public"."Servidores" (
+    "matricula" TEXT NOT NULL,
+    "nome" TEXT NOT NULL,
+    "cargo" TEXT,
+    "ativo" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Servidores_pkey" PRIMARY KEY ("matricula")
+);
+
+-- CreateTable
 CREATE TABLE "public"."Ocorrencia" (
     "codigo" TEXT NOT NULL,
     "situacao" TEXT NOT NULL DEFAULT 'Registrada',
     "data" TIMESTAMPTZ(3) NOT NULL,
     "medida" TEXT NOT NULL,
     "descricao" TEXT NOT NULL,
-    "alunoId" TEXT NOT NULL,
     "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "alunoId" TEXT NOT NULL,
+    "criadoPorMatricula" TEXT NOT NULL,
 
     CONSTRAINT "Ocorrencia_pkey" PRIMARY KEY ("codigo")
 );
@@ -27,12 +40,12 @@ CREATE TABLE "public"."Ocorrencia" (
 -- CreateTable
 CREATE TABLE "public"."user" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "emailVerified" BOOLEAN NOT NULL,
     "image" TEXT,
     "createdAt" TIMESTAMPTZ(3) NOT NULL,
     "updatedAt" TIMESTAMPTZ(3) NOT NULL,
+    "servidorMatricula" TEXT NOT NULL,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
@@ -83,16 +96,31 @@ CREATE TABLE "public"."verification" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Servidores_matricula_key" ON "public"."Servidores"("matricula");
+
+-- CreateIndex
 CREATE INDEX "Ocorrencia_alunoId_idx" ON "public"."Ocorrencia"("alunoId");
 
 -- CreateIndex
+CREATE INDEX "Ocorrencia_criadoPorMatricula_idx" ON "public"."Ocorrencia"("criadoPorMatricula");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "user_email_key" ON "public"."user"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "user_servidorMatricula_key" ON "public"."user"("servidorMatricula");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "session_token_key" ON "public"."session"("token");
 
 -- AddForeignKey
 ALTER TABLE "public"."Ocorrencia" ADD CONSTRAINT "Ocorrencia_alunoId_fkey" FOREIGN KEY ("alunoId") REFERENCES "public"."Aluno"("matricula") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."Ocorrencia" ADD CONSTRAINT "Ocorrencia_criadoPorMatricula_fkey" FOREIGN KEY ("criadoPorMatricula") REFERENCES "public"."Servidores"("matricula") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "public"."user" ADD CONSTRAINT "user_servidorMatricula_fkey" FOREIGN KEY ("servidorMatricula") REFERENCES "public"."Servidores"("matricula") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE CASCADE ON UPDATE CASCADE;

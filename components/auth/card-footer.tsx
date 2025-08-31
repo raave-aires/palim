@@ -11,7 +11,7 @@ export function AuthFooter({ auth_type }: AuthFooterProps) {
     <CardFooter className="w-full flex justify-center text-sm text-muted-foreground">
       {
         auth_type === "login" ? (
-          <Link href="/conta/registrar" className="group/linkCriacao">
+          <Link href="/conta/criar" className="group/linkCriacao">
             Não tem uma conta? {" "}
               <span className="underline-offset-4 group-hover/linkCriacao:underline">
                 Crie uma
