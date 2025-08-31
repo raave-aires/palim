@@ -4,16 +4,24 @@ import { useEffect, useState } from 'react';
 import { ExemploOcorrencia } from '@/components/pdfs/occurrencePdf';
 import { SiteHeader } from '@/components/siteHeader';
 
+// Criar um tipo para o PDFViewer
+type PDFViewerComponent = React.ComponentType<{
+  width: string;
+  height: string;
+  className?: string;
+  children: React.ReactNode;
+}>;
+
 export default function PDFViewerComponent() {
   const [isClient, setIsClient] = useState(false);
-  const [PDFViewer, setPDFViewer] = useState<any>(null);
+  const [PDFViewer, setPDFViewer] = useState<PDFViewerComponent | null>(null);
 
   useEffect(() => {
     setIsClient(true);
     
     // Importar apenas no cliente
     import('@react-pdf/renderer').then((module) => {
-      setPDFViewer(() => module.PDFViewer);
+      setPDFViewer(() => module.PDFViewer as PDFViewerComponent);
     });
   }, []);
 
