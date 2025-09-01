@@ -29,7 +29,6 @@ model Servidores {
   updatedAt   DateTime     @default(now()) @updatedAt @db.Timestamptz(3)
 
   // Relações
-  user        User?        // Um servidor pode ter uma conta de usuário (relação 1 para 1)
   ocorrencias Ocorrencia[] // Um servidor pode criar várias ocorrências
 }
 
@@ -66,8 +65,7 @@ model User {
   updatedAt     DateTime  @db.Timestamptz(3)
 
   // Relação com Servidores. A conta de usuário pertence a um servidor.
-  servidorMatricula String     @unique // Garante que um servidor só pode ter uma conta
-  servidor          Servidores @relation(fields: [servidorMatricula], references: [matricula], onDelete: Cascade)
+  funcMatricula String     @unique // Garante que um servidor só pode ter uma conta
 
   accounts      Account[]
   sessions      Session[]

@@ -45,7 +45,7 @@ CREATE TABLE "public"."user" (
     "image" TEXT,
     "createdAt" TIMESTAMPTZ(3) NOT NULL,
     "updatedAt" TIMESTAMPTZ(3) NOT NULL,
-    "servidorMatricula" TEXT NOT NULL,
+    "funcMatricula" TEXT NOT NULL,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
@@ -108,7 +108,7 @@ CREATE INDEX "Ocorrencia_criadoPorMatricula_idx" ON "public"."Ocorrencia"("criad
 CREATE UNIQUE INDEX "user_email_key" ON "public"."user"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "user_servidorMatricula_key" ON "public"."user"("servidorMatricula");
+CREATE UNIQUE INDEX "user_funcMatricula_key" ON "public"."user"("funcMatricula");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "session_token_key" ON "public"."session"("token");
@@ -118,9 +118,6 @@ ALTER TABLE "public"."Ocorrencia" ADD CONSTRAINT "Ocorrencia_alunoId_fkey" FOREI
 
 -- AddForeignKey
 ALTER TABLE "public"."Ocorrencia" ADD CONSTRAINT "Ocorrencia_criadoPorMatricula_fkey" FOREIGN KEY ("criadoPorMatricula") REFERENCES "public"."Servidores"("matricula") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "public"."user" ADD CONSTRAINT "user_servidorMatricula_fkey" FOREIGN KEY ("servidorMatricula") REFERENCES "public"."Servidores"("matricula") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "public"."session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
