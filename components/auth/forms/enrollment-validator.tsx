@@ -2,6 +2,7 @@
 
 // dependências:
 import React, { useActionState, startTransition, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,13 +19,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/pieces/loader";
-import { toast } from "sonner";
 
 // actions:
 import { validateEnrollment } from "@/lib/actions/validateEnrollment";
-import { RegisterForm } from "./register";
-import { AlertCircle } from "lucide-react";
 import { ValidateEnrollmentResult } from "../validate-enrollment-result";
+import { se } from "date-fns/locale";
 
 // esquema do zod
 const matriculaSchema = z.object({
@@ -32,6 +31,8 @@ const matriculaSchema = z.object({
 });
 
 export function EnrollmentValidator() {
+  const router = useRouter();
+
   const [state, formAction, isPending] = useActionState(
     validateEnrollment,
     null
@@ -49,6 +50,15 @@ export function EnrollmentValidator() {
       formAction(data);
     });
   }
+
+  useEffect(() => {
+    if (!isPending && state && state?.success && state?.servidor) {
+      sessionStorage.setItem("validationSuccess", "true");
+      sessionStorage.setItem("servidorNome", state.servidor.nome);
+      sessionStorage.setItem("servidorMatricula", state.servidor.matricula);
+      router.push("/conta/criar/validado");
+    }
+  }, [state, isPending, router]);
 
   return (
     <>
@@ -88,9 +98,8 @@ export function EnrollmentValidator() {
           <ValidateEnrollmentResult />
         ) : !isPending && state && !state?.success && state?.message ? (
           <ValidateEnrollmentResult text={state?.message} />
-        ) : !isPending && state && state?.success && state?.servidor && (
-        <RegisterForm />
-      )}
+        ) : null
+      }
     </>
   );
 }
