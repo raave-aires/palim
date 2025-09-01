@@ -65,7 +65,7 @@ model User {
   updatedAt     DateTime  @db.Timestamptz(3)
 
   // Relação com Servidores. A conta de usuário pertence a um servidor.
-  funcMatricula String     @unique // Garante que um servidor só pode ter uma conta
+  funcMatricula String?     @unique // Garante que um servidor só pode ter uma conta
 
   accounts      Account[]
   sessions      Session[]
