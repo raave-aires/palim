@@ -8,6 +8,7 @@ interface ValidateEnrollmentResult {
   message?: string;
   servidor?: {
     nome: string;
+    matricula: string;
   };
 };
 
@@ -40,6 +41,7 @@ export async function validateEnrollment(
         success: true,
         servidor: {
           nome: servidor.nome,
+          matricula: servidor.matricula
         }
       };
     } catch (error) {
