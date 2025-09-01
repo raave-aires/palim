@@ -3,6 +3,7 @@
 import React, {
   useState
 } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,17 +35,16 @@ import { getErrorMessage } from "@/lib/errors";
 // esquema do zod:
 const registerInfos = z.object({
   name: z.string().min(1, { message: "Como devemos te chamar?" }),
-  lastname: z.string().min(1, { message: "Seu sobrenome é?" }),
   email: z
-    .string()
-    .min(5, { message: "Precisamos de um e-mail para entrar em contato" })
-    .email({ message: "O e-mail digitado não é válido" }),
+    .email({ message: "O e-mail digitado não é válido" })
+    .min(5, { message: "Precisamos de um e-mail para entrar em contato" }),
   password: z
     .string()
     .min(1, { message: "Sua senha precisa ter ao menos 10 caracteres" }),
 });
 
 export function RegisterForm() {
+  const router = useRouter();
   const [isPending, setIsPending] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
   const [showErrorFlash, setShowErrorFlash] = useState(false);
@@ -60,7 +60,6 @@ export function RegisterForm() {
     resolver: zodResolver(registerInfos),
     defaultValues: {
       name: "",
-      lastname: "",
       email: "",
       password: "",
     },
@@ -79,7 +78,7 @@ export function RegisterForm() {
       {
         email: values.email,
         password: values.password,
-        name: values.name + " " + values.lastname,
+        name: values.name,
         callbackURL: "",
       },
       {
@@ -89,8 +88,13 @@ export function RegisterForm() {
         onSuccess: (ctx) => {
           setIsPending(false);
           setShowCheck(true);
-          setTimeout(() => setShowCheck(false), 2000);
-          toast.success(<p>Enviamos um e-mail de confirmação para <br/>{ctx.data.user.email}</p>)
+
+          sessionStorage.setItem('registerSuccess', 'true');
+          sessionStorage.setItem('registeredEmail', ctx.data.user.email);
+
+          setTimeout(() => {
+            router.push("/conta/criar/enviado");
+          }, 1000);
         },
         onError: (ctx) => {
           setIsPending(false);
@@ -109,35 +113,19 @@ export function RegisterForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-4"
         >
-          <div className="grid grid-cols-2 gap-x-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome</FormLabel>
-                  <FormControl>
-                    <Input autoComplete="given-name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="lastname"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Sobrenome</FormLabel>
-                  <FormControl>
-                    <Input autoComplete="family-name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nome</FormLabel>
+                <FormControl>
+                  <Input autoComplete="given-name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <FormField
             control={form.control}
