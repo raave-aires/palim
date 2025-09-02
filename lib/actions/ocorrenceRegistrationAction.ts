@@ -15,9 +15,12 @@ export async function registerOcorrence(
     detalhes: string;
     data: Date;
     medida: "Advertência verbal" | "Advertência escrita" | "Suspensão" | "Expulsão";
+    servidor: string
   }
 ): Promise<RegisterOccurrenceActionResult> {
   try {
+    console.log(data)
+    
     await db.$transaction(async (tx) => {
       const codigo = await generateCodigo(tx, data.data);
 
@@ -28,6 +31,7 @@ export async function registerOcorrence(
           descricao: data.detalhes,
           data: data.data,
           medida: data.medida,
+          criadoPorMatricula: data.servidor
         },
       });
     });
