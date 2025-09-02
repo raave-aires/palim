@@ -1,7 +1,7 @@
 "use client";
 
 // importações de dependências:
-import React, { startTransition, useActionState, useEffect } from "react";
+import React, { startTransition, useActionState, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -41,6 +41,8 @@ import { CalendarIcon } from "lucide-react";
 // actions:
 import { registerOcorrence } from "@/lib/actions/ocorrenceRegistrationAction";
 import { Feedback } from "@/components/feedback";
+import { authClient } from "@/lib/authClient";
+import { searchEmployeeEnrollmentCode } from "@/lib/actions/employeeEnrollmentCode";
 
 interface OccurrenceFormProps {
   matricula: string;
@@ -58,10 +60,15 @@ const occurrenceSchema = z.object({
 });
 
 export function OccurrenceForm({ matricula }: OccurrenceFormProps) {
+  const { data: session } = authClient.useSession();
+  const [ servidor, setServidor ] = useState<string>("");
+  const [ isLoadingMatricula, setIsLoadingMatricula ] = useState<boolean>(false);
+
   const [state, formAction, isPending] = useActionState(
     registerOcorrence,
     null
   );
+
   const occurrenceForm = useForm<z.infer<typeof occurrenceSchema>>({
     resolver: zodResolver(occurrenceSchema),
     defaultValues: {
@@ -71,12 +78,37 @@ export function OccurrenceForm({ matricula }: OccurrenceFormProps) {
     },
   });
 
+  useEffect(() => {
+    if (state?.success) {
+      occurrenceForm.reset();
+    }
+  }, [state?.success, occurrenceForm]);
+
+  useEffect(() => {
+    const acharMatricula = async () => {
+      if (session?.user?.email && !servidor) {
+        setIsLoadingMatricula(true);
+        try {
+          const matriculaRecuperada = await searchEmployeeEnrollmentCode(session.user.email);
+          setServidor(matriculaRecuperada || "");
+        } catch (error) {
+          console.error("Erro ao recuperar matrícula:", error);
+          setServidor("");
+        } finally {
+          setIsLoadingMatricula(false);
+        }
+      }
+    };
+    acharMatricula();
+  }, [session?.user?.email, servidor]);
+
   async function onSubmit(values: z.infer<typeof occurrenceSchema>) {
     const data = {
       matricula: matricula,
       detalhes: values.detalhes,
       data: values.data,
       medida: values.medida,
+      servidor: servidor
     };
 
     startTransition(() => {
@@ -84,20 +116,20 @@ export function OccurrenceForm({ matricula }: OccurrenceFormProps) {
     });
   }
 
-  useEffect(() => {
-    if(state?.success){
-      occurrenceForm.reset();
-    } else{
-      return;
-    }
-  }, [state?.success, occurrenceForm]);
-
   return (
     <Form {...occurrenceForm}>
       <form
         className="flex flex-col gap-4 mt-4"
         onSubmit={occurrenceForm.handleSubmit(onSubmit)}
       >
+        <div className="text-sm text-gray-600">
+          {isLoadingMatricula ? (
+            <span>Carregando matrícula...</span>
+          ) : (
+            <span>Matrícula do servidor: {servidor || "Não encontrada"}</span>
+          )}
+        </div>
+
         <FormField
           control={occurrenceForm.control}
           name="detalhes"
@@ -191,13 +223,20 @@ export function OccurrenceForm({ matricula }: OccurrenceFormProps) {
             )}
           />
         </div>
+
         {state?.message && !state.success && (
           <Feedback variant="error" text={state?.message as string} />
         )}
         {state?.message && state.success && (
           <Feedback variant="success" text={state?.message as string} />
         )}
-        <Button type="submit">{isPending ? <Loader /> : "Cadastrar"}</Button>
+        
+        <Button 
+          type="submit" 
+          disabled={isPending || isLoadingMatricula}
+        >
+          {isPending ? <Loader /> : "Cadastrar"}
+        </Button>
       </form>
     </Form>
   );
