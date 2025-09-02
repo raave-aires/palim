@@ -8,7 +8,6 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// Model para os dados dos alunos
 model Aluno {
   matricula   String       @id
   aluno       String
@@ -19,43 +18,33 @@ model Aluno {
   ocorrencias Ocorrencia[]
 }
 
-// Model para os dados dos funcionários da escola
 model Servidores {
   matricula   String       @id @unique
   nome        String
-  cargo       String? // Adicionei um campo opcional para o cargo (Professor, Coordenador, etc.)
-  ativo       Boolean      @default(true) // Campo para indicar se está trabalhando ativamente
+  cargo       String?
+  ativo       Boolean      @default(true)
   createdAt   DateTime     @default(now()) @db.Timestamptz(3)
   updatedAt   DateTime     @default(now()) @updatedAt @db.Timestamptz(3)
-
-  // Relações
-  ocorrencias Ocorrencia[] // Um servidor pode criar várias ocorrências
+  ocorrencias Ocorrencia[]
 }
 
-// Model para as ocorrências, agora com referência a quem a criou
 model Ocorrencia {
-  codigo    String   @id
-  situacao  String   @default("Registrada")
-  data      DateTime @db.Timestamptz(3)
-  medida    String
-  descricao String
-  createdAt DateTime @default(now()) @db.Timestamptz(3)
-  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(3)
-
-  // Relação com Aluno (quem sofreu a ocorrência)
-  alunoId   String
-  aluno     Aluno    @relation(fields: [alunoId], references: [matricula], onDelete: Cascade)
-
-  // Relação com Servidores (quem registrou a ocorrência)
+  codigo             String     @id
+  situacao           String     @default("Registrada")
+  data               DateTime   @db.Timestamptz(3)
+  medida             String
+  descricao          String
+  createdAt          DateTime   @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime   @default(now()) @updatedAt @db.Timestamptz(3)
+  alunoId            String
   criadoPorMatricula String
+  aluno              Aluno      @relation(fields: [alunoId], references: [matricula], onDelete: Cascade)
   criadoPor          Servidores @relation(fields: [criadoPorMatricula], references: [matricula])
 
   @@index([alunoId])
   @@index([criadoPorMatricula])
 }
 
-// --- MODELS DE AUTENTICAÇÃO ---
-// Model de usuário para autenticação, agora ligado a um Servidor
 model User {
   id            String    @id
   email         String    @unique
@@ -63,10 +52,8 @@ model User {
   image         String?
   createdAt     DateTime  @db.Timestamptz(3)
   updatedAt     DateTime  @db.Timestamptz(3)
-
-  // Relação com Servidores. A conta de usuário pertence a um servidor.
-  funcMatricula String     @unique // Garante que um servidor só pode ter uma conta
-
+  funcMatricula String?   @unique
+  name          String
   accounts      Account[]
   sessions      Session[]
 
@@ -88,20 +75,20 @@ model Session {
 }
 
 model Account {
-  id                  String    @id
-  accountId           String
-  providerId          String
-  userId              String
-  accessToken         String?
-  refreshToken        String?
-  idToken             String?
-  accessTokenExpiresAt DateTime? @db.Timestamptz(3)
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime? @db.Timestamptz(3)
   refreshTokenExpiresAt DateTime? @db.Timestamptz(3)
-  scope               String?
-  password            String?
-  createdAt           DateTime  @db.Timestamptz(3)
-  updatedAt           DateTime  @db.Timestamptz(3)
-  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @db.Timestamptz(3)
+  updatedAt             DateTime  @db.Timestamptz(3)
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("account")
 }
