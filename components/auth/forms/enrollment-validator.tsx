@@ -56,7 +56,7 @@ export function EnrollmentValidator() {
       sessionStorage.setItem("validationSuccess", "true");
       sessionStorage.setItem("servidorNome", state.servidor.nome);
       sessionStorage.setItem("servidorMatricula", state.servidor.matricula);
-      router.push("/conta/criar/validado");
+      router.push("/conta/criar");
     }
   }, [state, isPending, router]);
 

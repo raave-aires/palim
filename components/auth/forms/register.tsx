@@ -43,7 +43,12 @@ const registerInfos = z.object({
     .min(1, { message: "Sua senha precisa ter ao menos 10 caracteres" }),
 });
 
-export function RegisterForm() {
+interface RegisterFormProps {
+  nomeDoServidor: string;
+  matriculaDoServidor: string;
+}
+
+export function RegisterForm({ nomeDoServidor, matriculaDoServidor }: RegisterFormProps) {
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
   const [showCheck, setShowCheck] = useState(false);
@@ -59,7 +64,7 @@ export function RegisterForm() {
   const form = useForm<z.infer<typeof registerInfos>>({
     resolver: zodResolver(registerInfos),
     defaultValues: {
-      name: "",
+      name: nomeDoServidor,
       email: "",
       password: "",
     },
@@ -120,7 +125,7 @@ export function RegisterForm() {
               <FormItem>
                 <FormLabel>Nome</FormLabel>
                 <FormControl>
-                  <Input autoComplete="given-name" {...field} />
+                  <Input disabled {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

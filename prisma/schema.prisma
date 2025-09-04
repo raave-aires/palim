@@ -58,6 +58,7 @@ model Ocorrencia {
 // Model de usuário para autenticação, agora ligado a um Servidor
 model User {
   id            String    @id
+  name          String
   email         String    @unique
   emailVerified Boolean
   image         String?

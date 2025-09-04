@@ -17,17 +17,17 @@ export const auth = betterAuth({
   }),
   // plugins:
   plugins: [
-     passkey({
+    passkey({
       rpID: "palim.com.br",
       rpName: "Palim",
       origin: "https:/palim.com.br",
       authenticatorSelection: {
         authenticatorAttachment: "cross-platform",
         residentKey: "preferred",
-        userVerification: "preferred"
-      }
-     }),
-     twoFactor() 
+        userVerification: "preferred",
+      },
+    }),
+    twoFactor(),
   ],
 
   // tipos de autenticação possíveis:
@@ -45,5 +45,9 @@ export const auth = betterAuth({
       });
     },
     sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    async afterEmailVerification() {
+      
+    },
   },
 });

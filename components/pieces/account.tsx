@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 // componentes:
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -11,7 +11,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LifeBuoy, LogIn, MessageSquareText, Settings, UserRoundPlus } from "lucide-react";
+import {
+  LifeBuoy,
+  LogIn,
+  MessageSquareText,
+  Settings,
+  UserRoundPlus,
+} from "lucide-react";
 import { LogOutDropdownButton } from "@/components/auth/logout-buttons";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -22,7 +28,7 @@ interface LoggedInProps {
   email: string;
 }
 
-function LoggedIn({ name, email }: LoggedInProps ) {
+function LoggedIn({ name, email }: LoggedInProps) {
   return (
     <DropdownMenuContent align="end">
       <DropdownMenuLabel>
@@ -72,7 +78,7 @@ function Unlogged() {
 }
 
 export async function Account() {
-    const session = await auth.api.getSession({
+  const session = await auth.api.getSession({
     headers: await headers(),
   });
 
@@ -85,12 +91,11 @@ export async function Account() {
         </Avatar>
       </DropdownMenuTrigger>
 
-      { session ? (
-        <LoggedIn 
-          name={session.user.name}
-          email={session.user.email}
-        /> 
-      ) : <Unlogged />}
+      {session ? (
+        <LoggedIn name={session.user.name} email={session.user.email} />
+      ) : (
+        <Unlogged />
+      )}
     </DropdownMenu>
   );
 }
