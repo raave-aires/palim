@@ -6,9 +6,10 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { db } from "@/lib/db";
 
 // plugins:
-import { twoFactor } from "better-auth/plugins";
+import { customSession, twoFactor } from "better-auth/plugins";
 import { sendVerificationEmail } from "@/lib/actions/send-verification-email";
 import { passkey } from "better-auth/plugins/passkey";
+import { searchEmployeeEnrollmentCode } from "./actions/employeeEnrollmentCode";
 
 export const auth = betterAuth({
   // conexão do bando de dados:
@@ -24,10 +25,20 @@ export const auth = betterAuth({
       authenticatorSelection: {
         authenticatorAttachment: "cross-platform",
         residentKey: "preferred",
-        userVerification: "preferred",
-      },
-    }),
-    twoFactor(),
+        userVerification: "preferred"
+      }
+     }),
+     twoFactor(),
+     customSession(async ({user, session}) => {
+      const matricula = searchEmployeeEnrollmentCode(user?.email);
+      return {
+        user: {
+          ...user,
+          matricula: matricula
+        },
+        session
+      };
+     })
   ],
 
   // tipos de autenticação possíveis:
